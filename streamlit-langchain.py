@@ -23,10 +23,10 @@ endpoint = "https://models.github.ai/inference"
 model = "openai/gpt-4.1-nano"
 
 loader = WebBaseLoader(
-    web_paths=("https://lilianweng.github.io/posts/2017-06-21-overview/",),
+    web_paths=("https://lt.wikipedia.org/wiki/Vilnius",),
     bs_kwargs=dict(
         parse_only=bs4.SoupStrainer(
-            class_=("post-content", "post-title", "post-header")
+            class_=("mw-parser-output", "mw-heading")
         )
     ),
 )
