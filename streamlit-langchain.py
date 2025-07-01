@@ -62,21 +62,18 @@ transcript_text = transcribe_youtube_video("https://www.youtube.com/watch?v=o0Pm
 text_from_file = read_file("Vilnius.txt")
 text_from_wikipedia = fetch_wikipedia_content("https://lt.wikipedia.org/wiki/Vilnius")                                           
 
-#loader = WebBaseLoader(
-#    web_paths=("https://lt.wikipedia.org/wiki/Vilnius",),
-#    bs_kwargs=dict(
-#        parse_only=bs4.SoupStrainer(
-#            class_=("mw-parser-output", "mw-heading")
-#        )
-#    ),
-#)
-#docs = loader.load()
 
-st.title("Vilnius Guide RAG")
-st.subheader("📖 Combined sources")
+st.set_page_config(page_title="Vilnius RAG", page_icon=":city_sunset:", layout="wide")
+st.title("Vilnius Guide")
+st.subheader("📖 Used sources")
+st.markdown("""
+1. [YouTube Video](https://www.youtube.com/watch?v=o0PmNtsqCzA)
+2. Local file: Vilnius.txt
+3. [Wikipedia Article](https://lt.wikipedia.org/wiki/Vilnius)
+""")
 
+# Combine the text from all sources
 combined_text = f"{text_from_wikipedia}\n\n{transcript_text}\n\n{text_from_file}"
-st.text_area("🎬 Combined text", combined_text, height=300)
 
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=10)
 splits = text_splitter.create_documents([combined_text])
@@ -109,15 +106,14 @@ def generate_response(input_text):
     
     st.info(rag_chain.invoke(input_text))
     
-    st.subheader("📚 Sources")
+    st.subheader("📚 Content sources")
     for i, doc in enumerate(fetched_docs, 1):
         with st.expander(f"Source {i}"):
             st.write(f"**Content:** {doc.page_content}")
             
 with st.form("my_form"):
     text = st.text_area(
-        "Enter text:",
-        "What coordinates of Vilnius?",
+        "Type your questions about Vilnius here:",
     )
     submitted = st.form_submit_button("Submit")
     if submitted:
