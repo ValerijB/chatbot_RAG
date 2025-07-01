@@ -6,6 +6,9 @@ __pycache__/
 # C extensions
 *.so
 
+# For experimental use only
+sources_uploader.py
+
 # Distribution / packaging
 .Python
 build/
